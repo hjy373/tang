@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极限竞速：地平线4 - 四季竞速官方宣传页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background-color: #08080c;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* 顶部导航栏 */
+        nav {
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            border-bottom: 2px solid #ff7c00;
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            color: #ff7c00;
+            letter-spacing: 2px;
+        }
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 36px;
+            font-size: 16px;
+            transition: 0.3s ease;
+        }
+        .nav-menu a:hover {
+            color: #ff7c00;
+        }
+
+        /* ========== 导航下方主横幅 16:9，文字悬浮图片上层 ========== */
+        .main-banner {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin-top: 70px;
+            overflow: hidden;
+            position: relative;
+        }
+        /* 背景图片容器，纯图片无文字 */
+        .banner-bg {
+            width: 100%;
+            height: 100%;
+            background: url("主题.jpg") center/cover no-repeat;
+        }
+        /* 遮罩+文字层，在图片上方 */
+        .banner-mask {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.65));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .banner-mask h1 {
+            font-size: 62px;
+            color: #ff7c00;
+            margin-bottom: 18px;
+        }
+        .banner-mask p {
+            font-size: 22px;
+            max-width: 820px;
+            line-height: 1.8;
+        }
+
+        /* 四季介绍板块 */
+        .season-intro {
+            padding: 100px 50px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 46px;
+            color: #ff7c00;
+            margin-bottom: 70px;
+        }
+        .season-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+        }
+        .season-card {
+            background: #11111a;
+            border: 1px solid #222;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+        .season-card:hover {
+            transform: translateY(-12px);
+            border-color: #ff7c00;
+        }
+        .season-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 26px;
+        }
+        .card-content h3 {
+            font-size: 26px;
+            color: #ff7c00;
+            margin-bottom: 14px;
+        }
+        .card-content p {
+            font-size: 16px;
+            color: #cccccc;
+            line-height: 1.7;
+        }
+
+        /* ========== 四季轮播 电影画幅2.39:1（页面最底部） ========== */
+        .season-carousel {
+            width: 100%;
+            aspect-ratio: 2.39 / 1;
+            overflow: hidden;
+            position: relative;
+            margin-top: 60px;
+        }
+        .carousel-track {
+            width: 400%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.8s ease-in-out;
+        }
+        .slide-item {
+            width: 25%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .slide-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .slide-text {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        }
+        .slide-text h2 {
+            font-size: 38px;
+            color: #ff7c00;
+            margin-bottom: 12px;
+        }
+        .slide-text p {
+            font-size: 18px;
+            color: #eaeaea;
+            max-width: 750px;
+        }
+
+        /* 轮播左右按钮 */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 124, 0, 0.7);
+            color: #000;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+        }
+        .carousel-btn:hover {
+            background: #ff7c00;
+        }
+        .prev { left: 30px; }
+        .next { right: 30px; }
+
+        /* 底部圆点指示器 */
+        .dot-group {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 14px;
+            z-index: 10;
+        }
+        .dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            cursor: pointer;
+        }
+        .dot.active {
+            background: #ff7c00;
+        }
+
+        /* 页脚 */
+        footer {
+            width: 100%;
+            padding: 55px 30px;
+            background: #000000;
+            text-align: center;
+            border-top: 1px solid #202020;
+            margin-top: 40px;
+        }
+        footer p {
+            color: #777777;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* 移动端适配 */
+        @media screen and (max-width: 1024px) {
+            .season-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .banner-mask h1 {
+                font-size: 44px;
+            }
+        }
+        @media screen and (max-width: 640px) {
+            nav {
+                padding: 0 15px;
+            }
+            .nav-menu a {
+                margin-left: 12px;
+                font-size: 14px;
+            }
+            .season-grid {
+                grid-template-columns: 1fr;
+            }
+            .banner-mask h1 {
+                font-size: 32px;
+            }
+            .slide-text h2 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="logo">极限竞速：地平线4</div>
+        <div class="nav-menu">
+            <a href="#season">四季特色</a>
+            <a href="#car">车辆列表</a>
+            <a href="#video">游戏预告</a>
+            <a href="#buy">立即购买</a>
+        </div>
+    </nav>
+
+    <!-- 导航下方主横幅 16:9画幅，文字悬浮在图片上层 -->
+    <div class="main-banner">
+        <!-- 纯背景图片，无内置文字 -->
+        <div class="banner-bg"></div>
+        <!-- 网页文字层，覆盖在图片上方 -->
+        <div class="banner-mask">
+            <h1>英国全境，四季变幻竞速狂欢</h1>
+            <p>极限竞速：地平线4首创动态四季系统，驰骋春日花海、夏日海岸、金秋枫林、冰封湖面，体验独一无二的开放世界赛车盛宴</p>
+        </div>
+    </div>
+
+    <!-- 四季详细介绍板块 -->
+    <section class="season-intro" id="season">
+        <h2 class="section-title">探索四大动态季节</h2>
+        <div class="season-grid">
+            <div class="season-card">
+                <img src="春.jpg" alt="春季">
+                <div class="card-content">
+                    <h3>春季</h3>
+                    <p>气温温和，频繁阵雨，乡间泥路松软，花海山谷遍布，拉力车与越野车在此拥有绝佳发挥空间。</p>
+                </div>
+            </div>
+            <div class="season-card">
+                <img src="夏.jpg" alt="夏季">
+                <div class="card-content">
+                    <h3>夏季</h3>
+                    <p>干燥高温，路面摩擦力拉满，沿海高速与城市赛道开放，是超跑、顶级跑车刷新极速的专属季节。</p>
+                </div>
+            </div>
+            <div class="season-card">
+                <img src="秋.jpg" alt="秋季">
+                <div class="card-content">
+                    <h3>秋季</h3>
+                    <p>山林红黄交织，落叶降低路面抓地力，漂移赛事集中上线，沿路自然风光堪称游戏颜值巅峰。</p>
+                </div>
+            </div>
+            <div class="season-card">
+                <img src="冬.jpg" alt="冬季">
+                <div class="card-content">
+                    <h3>冬季</h3>
+                    <p>全域积雪结冰，湖面化为巨型冰场，新增冰雪竞速赛事，两驱车极易打滑，四驱车型是最优选择。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 轮转四季图（页面最底部，卡片下方、页脚上方） -->
+    <div class="season-carousel">
+        <div class="carousel-track" id="track">
+            <!-- 春季 -->
+            <div class="slide-item">
+                <img src="春.jpg" alt="地平线4春季">
+                <div class="slide-text">
+                    <h2>春季 · 春雨繁花</h2>
+                    <p>绵绵细雨浸润乡野泥土，漫山樱花盛放，泥泞越野赛道是拉力赛车的最佳舞台</p>
+                </div>
+            </div>
+            <!-- 夏季 -->
+            <div class="slide-item">
+                <img src="夏.jpg" alt="地平线4夏季">
+                <div class="slide-text">
+                    <h2>夏季 · 晴空海岸</h2>
+                    <p>万里无云的晴朗天气，干燥平整沿海公路，驾驶超跑释放极速，挑战直线极速纪录</p>
+                </div>
+            </div>
+            <!-- 秋季 -->
+            <div class="slide-item">
+                <img src="秋.jpg" alt="地平线4秋季">
+                <div class="slide-text">
+                    <h2>秋季 · 金红枫林</h2>
+                    <p>漫山秋叶铺满路面，抓地力大幅下降，适合漂移玩法，沿途绝美风景适合拍照打卡</p>
+                </div>
+            </div>
+            <!-- 冬季 -->
+            <div class="slide-item">
+                <img src="冬.jpg" alt="地平线4冬季">
+                <div class="slide-text">
+                    <h2>冬季 · 冰封雪原</h2>
+                    <p>全境落雪，湖泊彻底冻结，专属冰面赛道开启，四驱车辆才能从容驾驭湿滑冰面</p>
+                </div>
+            </div>
+        </div>
+        <!-- 切换按钮 -->
+        <button class="carousel-btn prev" id="prevBtn">&lt;</button>
+        <button class="carousel-btn next" id="nextBtn">&gt;</button>
+        <!-- 圆点指示器 -->
+        <div class="dot-group" id="dotWrap">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+            <span class="dot" data-index="3"></span>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>极限竞速：地平线4 主题宣传演示页面 | 游戏版权归属 Playground Games 与 Xbox 游戏工作室</p>
+        <p>本页面仅作前端展示演示，非官方商业网站 ©2026</p>
+    </footer>
+
+    <!-- 轮播交互JS -->
+    <script>
+        const track = document.getElementById('track');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dots = document.querySelectorAll('.dot');
+        const carouselBox = document.querySelector('.season-carousel');
+        let current = 0;
+        const slideTotal = 4;
+
+        // 更新轮播位置与激活圆点
+        function refreshCarousel() {
+            track.style.transform = `translateX(-${current * 25}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[current].classList.add('active');
+        }
+
+        // 上一张
+        function slidePrev() {
+            current = (current - 1 + slideTotal) % slideTotal;
+            refreshCarousel();
+        }
+        // 下一张
+        function slideNext() {
+            current = (current + 1) % slideTotal;
+            refreshCarousel();
+        }
+
+        // 按钮点击事件
+        prevBtn.addEventListener('click', slidePrev);
+        nextBtn.addEventListener('click', slideNext);
+
+        // 圆点切换
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                current = Number(dot.dataset.index);
+                refreshCarousel();
+            })
+        })
+
+        // 自动轮播 4秒切换
+        let autoTimer = setInterval(slideNext, 4000);
+        // 鼠标移入暂停，移出继续
+        carouselBox.addEventListener('mouseenter', () => clearInterval(autoTimer));
+        carouselBox.addEventListener('mouseleave', () => {
+            autoTimer = setInterval(slideNext, 4000);
+        })
+    </script>
+</body>
+</html>
